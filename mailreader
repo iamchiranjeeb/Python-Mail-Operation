@@ -1,0 +1,174 @@
+#! /usr/bin/env python
+import smtplib
+import pendulum
+import pytz
+import datetime
+import getpass
+import time
+import imaplib
+import email
+import sys
+import validate_email
+from validate_email import validate_email
+import re
+import colorama
+from colorama import Fore, Back, Style
+colorama.init()
+
+print(Fore.LIGHTGREEN_EX)
+utc = pytz.utc
+ist = pendulum.timezone('Asia/Calcutta')
+now = datetime.datetime.now()
+print ("Current date and time : ")
+print (now.strftime("%Y-%m-%d %H:%M:%S"))
+currentTime = datetime.datetime.now()
+currentTime.hour
+if currentTime.hour < 12:
+     print('Good morning.')
+elif 12 <= currentTime.hour < 18:
+     print('Good afternoon.')
+else:
+     print('Good evening.')
+print('')
+print('Current Date Time in UTC =', datetime.datetime.now(tz=utc))
+print('Current Date Time in IST =', datetime.datetime.now(ist))
+print(Style.RESET_ALL)
+
+
+print(Fore.YELLOW)
+print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
+print('______________________/\/\/\/\/\/\/_____________________________')
+print('--      --    --   ----Mail Reader----     --      --      -- '  )
+print("----------------------\/\/\/\/\/\/\/----------------------------")
+print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
+print(Style.RESET_ALL)
+time.sleep(2)
+input("Press Enter To Continue.......")
+print(' ')
+print(' ')
+print(' ')
+
+print(Fore.BLUE)
+print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+print("@@@@@@@@@@@@@@@@@@@@ Tips @@@@@@@@@@@@@@@@@@@@@@@")
+print("@@@@@@@@@ Mail Service: GMAIL/OUTLOOK @@@@@@@@@@")
+print("@@@@@@ Type: ALL/SEEN/UNSEEN/FROM/TO PERSON @@@@@")
+print("@@@@@@@@@@ Folder: INBOX/TRASH/SENT @@@@@@@@@@@@@")
+print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+print(Style.RESET_ALL)
+time.sleep(3)
+print(' ')
+print(' ')
+print(' ')
+
+try:
+    print(Fore.GREEN)
+    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    print('')
+    mail_Service = input("Enter Your Mail Service: ")
+    if(mail_Service.isupper() == True):
+        print(Fore.RED)
+        sys.exit("Letters Should Be Small")
+        print(Style.RESET_ALL)
+    match = re.search(r"gmail",mail_Service)
+    match2 = re.search(r"outlook",mail_Service)
+    match3 = re.search(r"hotmail",mail_Service)
+    if match == None and match2 == None and match3 == None:
+        print(Fore.RED)
+        #raise ValueError(mail_Service,"Service Not Avaliable ")
+        sys.exit("Service Not Avaliable")
+        print(Style.RESET_ALL)
+    USER_MAIL = input("ENTER MAIL_ID: ")
+    is_valid = validate_email(USER_MAIL)
+    if is_valid == False:
+        print(Fore.RED)
+        sys.exit("This is Not a Mail")
+        print(Style.RESET_ALL)
+    USER_PASS = getpass.getpass("ENTER MAIL_PASS: ")
+    print('')
+    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    print(Style.RESET_ALL)
+    time.sleep(2)
+    print(' ')
+    print(' ')
+    print(' ')
+
+
+
+
+
+    if mail_Service == "outlook" or mail_Service == "hotmail":
+        mail = imaplib.IMAP4_SSL("imap.outlook.com")
+        pass
+    elif mail_Service == "gmail":
+        mail = imaplib.IMAP4_SSL("imap.gmail.com")
+        pass
+    #mail = imaplib.IMAP4_SSL('imap.gmail.com')
+    mail.login(USER_MAIL,USER_PASS)
+
+    print("Logging In...........")
+    time.sleep(2)
+    print(Fore.GREEN)
+    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+    print('')
+    Type=input("Enter Type Of Mail: ")
+    Folder = input("Enter Folder Of Mail You Want to Read: ")
+    n=int(input("How Many Mails You Want To See: "))
+    print('')
+    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+    print(Style.RESET_ALL)
+    time.sleep(2)
+    print(' ')
+    print(' ')
+    print(' ')
+    print("Fetching Datas.............")
+    time.sleep(1)
+    print(' ')
+    print(' ')
+
+
+    mail.select(Folder)
+    type, data = mail.search(None, Type)
+    mail_ids = data[0]
+
+    id_list = mail_ids.split()
+    first_email_id = int(id_list[0])
+    latest_email_id = int(id_list[-1])
+
+
+    for i in range(latest_email_id,latest_email_id-n,-1):
+        typ, data = mail.fetch(str(i), '(RFC822)' )
+
+        for response_part in data:
+            if isinstance(response_part, tuple):
+                msg = email.message_from_string(str(response_part[1].decode("utf-8")))
+                email_subject = msg['subject']
+                email_from = msg['from']
+                email_to = msg['To']
+                email_date = msg['Date']
+                email_from = email_from.replace('<',' ')
+                email_from = email_from.replace('>',' ')
+
+
+                print("*************************************************")
+                print("*************************************************")
+                print('')
+                print(Fore.YELLOW)
+                print ('From : ' , email_from , '\n')
+                print('To :', email_to, '\n')
+                print('Date : ', email_date, '\n')
+                print ('Subject : ' , email_subject , '\n')
+                print(Style.RESET_ALL)
+                print('')
+                print("*************************************************")
+                print("*************************************************")
+                time.sleep(5)
+
+except Exception as e:
+    print(Fore.RED)
+    print("Something Went Wrong",e)
+    print(Style.RESET_ALL)

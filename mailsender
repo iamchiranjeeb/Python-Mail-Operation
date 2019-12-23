@@ -1,0 +1,229 @@
+#! /usr/bin/env python
+
+import smtplib
+import pytz
+import pendulum
+import time
+import datetime
+import re
+import getpass
+import os
+import sys
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email.mime.application import MIMEApplication
+from email import encoders
+import validate_email
+from validate_email import validate_email
+import colorama
+from colorama import Fore, Back, Style
+colorama.init()
+
+print(Fore.LIGHTGREEN_EX)
+utc = pytz.utc
+ist = pendulum.timezone('Asia/Calcutta')
+now = datetime.datetime.now()
+print ("Current date and time : ")
+print (now.strftime("%Y-%m-%d %H:%M:%S"))
+currentTime = datetime.datetime.now()
+currentTime.hour
+if currentTime.hour < 12:
+     print('Good morning.')
+elif 12 <= currentTime.hour < 18:
+     print('Good afternoon.')
+else:
+     print('Good evening.')
+print('')
+print('Current Date Time in UTC =', datetime.datetime.now(tz=utc))
+print('Current Date Time in IST =', datetime.datetime.now(ist))
+print(Style.RESET_ALL)
+
+
+print(Fore.YELLOW)
+print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
+print('______________________/\/\/\/\/\/\/_____________________________')
+print('--      --    --   ----Mail Sender----     --      --      -- '  )
+print("----------------------\/\/\/\/\/\/\/----------------------------")
+print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
+print(Style.RESET_ALL)
+time.sleep(2)
+input("Press Enter To Continue.......")
+print(' ')
+print(' ')
+print(' ')
+
+print(Fore.BLUE)
+print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+print("@@@@@@@@@@@@@@@@@@@@ TIPS @@@@@@@@@@@@@@@@@@@@@@@")
+print("@@@@@@@@@@@@@ ONLY GMAIL & OUTLOOK @@@@@@@@@@@@@@")
+print("@@@@@@@@ MAIL LESS SECURE APP SHOULD ON @@@@@@@@@")
+print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+print(Style.RESET_ALL)
+time.sleep(3)
+print(' ')
+print(' ')
+print(' ')
+input("Press Enter To Continue.....")
+
+
+
+
+
+try:
+    print(Fore.GREEN)
+    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    print('')
+    mail_Service = input("MAIL_SERVICE: ")
+    if(mail_Service.isupper() == True):
+        print(Fore.RED)
+        sys.exit("Letters Should Be Small")
+        print(Style.RESET_ALL)
+    match = re.search(r"gmail",mail_Service)
+    match2 = re.search(r"outlook",mail_Service)
+    match3 = re.search(r"hotmail",mail_Service)
+    if match == None and match2 == None and match3 == None:
+        print(Fore.RED)
+        sys.exit("Service Not Avaliable")
+        print(Style.RESET_ALL)
+    fromaddr = input("MAIL_ID: ")
+    is_valid = validate_email(fromaddr)
+    if is_valid == False:
+        print(Fore.RED)
+        sys.exit('This is Not a mail')
+        print(Style.RESET_ALL)
+    Password = getpass.getpass("PASSWORD: ")
+    print('')
+    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    print(Style.RESET_ALL)
+    time.sleep(2)
+    print('')
+    print("Fetching Details............")
+    time.sleep(1)
+    print('')
+    print('')
+    print('')
+
+    print(Fore.GREEN)
+    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+    print('')
+    subject = input("Subject: ")
+    bodyMail = input("Body: ")
+    print('')
+    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+    print(Style.RESET_ALL)
+    time.sleep(2)
+    print('')
+    print('')
+
+    print(Fore.LIGHTBLUE_EX)
+    print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
+    print('______________________/\/\/\/\/\/\/_____________________________')
+    print("----------------------\/\/\/\/\/\/\/----------------------------")
+    print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
+    print(Style.RESET_ALL)
+    print('')
+    contacts = []
+    toSize = int(input("To How Many People You Want To Send: "))
+    print("Enter Recipient Emails: ")
+    print(Fore.YELLOW)
+    for i in range(0,toSize):
+        cont = input()
+        contacts.append(cont)
+    print(Style.RESET_ALL)
+    mailTimes = int(input("How Many Times You Want To Send:  "))
+
+
+
+    msg = MIMEMultipart()
+    msg['From'] = fromaddr
+    msg['To'] = ', '.join(contacts)
+    msg['Subject'] = subject
+    body = bodyMail
+    msg.attach(MIMEText(body, 'plain'))
+
+
+
+
+
+    file = input("Want To Send Any Files: 1.Yes  2.No\n")
+    if file == "Yes":
+        fileSize=int(input("How many Files: "))
+        dir_path = input("Enter Path: ")
+        files = []
+        print("Enter File Names: ")
+        print(Fore.YELLOW)
+        for i in range(0,fileSize):
+            doc = input()
+            files.append(doc)
+        print(Style.RESET_ALL)
+
+        for f in files:  # add files to the message
+            file_path = os.path.join(dir_path, f)
+            attachment = MIMEApplication(open(file_path, "rb").read(), _subtype="txt")
+            attachment.add_header('Content-Disposition','attachment', filename=f)
+            msg.attach(attachment)
+            pass
+
+    elif file == "No":
+        pass
+    print('')
+    print(Fore.LIGHTBLUE_EX)
+    print('')
+    print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
+    print('______________________/\/\/\/\/\/\/_____________________________')
+    print("----------------------\/\/\/\/\/\/\/----------------------------")
+    print("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
+    print(Style.RESET_ALL)
+    time.sleep(2)
+    print('')
+    print('')
+    print('')
+
+    if mail_Service == "outlook" or mail_Service == "hotmail":
+        s = smtplib.SMTP('smtp-mail.outlook.com', 587)
+        pass
+    elif mail_Service == "gmail":
+        s = smtplib.SMTP('smtp.gmail.com', 587)
+        pass
+
+    s.starttls()
+    s.login(fromaddr, Password)
+    print('Logging in .........')
+    print('')
+    text = msg.as_string()
+    for j in range(0,mailTimes):
+        s.sendmail(fromaddr, contacts, text)
+    time.sleep(2)
+    print("Mail Sent.............")
+    time.sleep(1)
+    print('')
+    print('')
+    print(Fore.CYAN)
+    print("<<<<<<<<<<<<<<<<<<<<<<<<<<------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    print("<<<<<<<<<<<<<<<<<<<<<<<<<<------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    print(Style.RESET_ALL)
+    print('')
+    print(Fore.YELLOW)
+    print("From: ",fromaddr)
+    print("To: ",contacts)
+    print("Subject: ",subject)
+    print("Body: ", bodyMail)
+    print("Files: ",files)
+    print(Style.RESET_ALL)
+    print('')
+    print(Fore.CYAN)
+    print("<<<<<<<<<<<<<<<<<<<<<<<<<<------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    print("<<<<<<<<<<<<<<<<<<<<<<<<<<------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    print(Style.RESET_ALL)
+    s.quit()
+
+except Exception as e :
+    print(Fore.RED)
+    print('Something Went Wrong: ')
+    print(e)
+    print(Style.RESET_ALL)

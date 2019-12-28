@@ -213,7 +213,11 @@ try:
     print("To: ",contacts)
     print("Subject: ",subject)
     print("Body: ", bodyMail)
-    print("Files: ",files)
+    if file=="Yes":
+          print("Files",files)
+          pass
+    elif file == "No":
+          pass
     print(Style.RESET_ALL)
     print('')
     print(Fore.CYAN)
